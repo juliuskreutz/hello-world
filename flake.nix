@@ -13,7 +13,16 @@
       flake-utils,
       ...
     }:
-    flake-utils.lib.eachDefaultSystem (
+    {
+      overlays.default = _: prev: {
+        hello-world = self.packages.${prev.stdenv.hostPlatform.system}.default;
+      };
+      overlays.hello-world = self.overlays.default;
+
+      nixosModules.default = import ./default.nix inputs;
+      nixosModules.hello-world = self.nixosModules.default;
+    }
+    // flake-utils.lib.eachDefaultSystem (
       system:
       let
         overlays = [ (import rust-overlay) ];
@@ -47,13 +56,6 @@
             };
         packages.hello-world = self.packages.default;
 
-        overlays.default = _: prev: {
-          hello-world = self.packages.${prev.stdenv.hostPlatform.system}.default;
-        };
-        overlays.hello-world = self.overlays.default;
-
-        nixosModules.default = import ./default.nix inputs;
-        nixosModules.hello-world = self.nixosModules.default;
       }
     );
 }
