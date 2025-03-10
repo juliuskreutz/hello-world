@@ -16,5 +16,9 @@ in
 
   config = lib.mkIf cfg.enable {
     nixpkgs.overlays = [ inputs.self.overlays.default ];
+
+    environment.systemPackages = [
+      pkgs.hello-world
+    ];
   };
 }
