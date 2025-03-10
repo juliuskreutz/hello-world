@@ -63,20 +63,22 @@
             ];
           };
 
-        packages.default =
-          (pkgs.makeRustPlatform {
-            cargo = pkgs.rust-bin.stable.latest.default;
-            rustc = pkgs.rust-bin.stable.latest.default;
-          }).buildRustPackage
-            {
-              pname = "hello-world";
-              version = "0.1.0";
+        packages = rec {
+          default =
+            (pkgs.makeRustPlatform {
+              cargo = pkgs.rust-bin.stable.latest.default;
+              rustc = pkgs.rust-bin.stable.latest.default;
+            }).buildRustPackage
+              {
+                pname = "hello-world";
+                version = "0.1.0";
 
-              src = ./.;
+                src = ./.;
 
-              cargoLock.lockFile = ./Cargo.lock;
-            };
-        packages.hello-world = self.packages.default;
+                cargoLock.lockFile = ./Cargo.lock;
+              };
+          hello-world = default;
+        };
       }
     );
 }
