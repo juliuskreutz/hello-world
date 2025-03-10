@@ -1,4 +1,4 @@
-inputs:
+overlays:
 {
   config,
   lib,
@@ -11,11 +11,10 @@ in
 {
   options.programs.hello-world = {
     enable = lib.mkEnableOption "hello-world";
-    package = lib.mkPackageOption pkgs "hello-world" { };
   };
 
   config = lib.mkIf cfg.enable {
-    nixpkgs.overlays = [ inputs.self.overlays.default ];
+    nixpkgs.overlays = [ overlays.default ];
 
     environment.systemPackages = [
       pkgs.hello-world

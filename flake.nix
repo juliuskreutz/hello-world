@@ -19,7 +19,7 @@
       };
       overlays.hello-world = self.overlays.default;
 
-      nixosModules.default = import ./default.nix inputs;
+      nixosModules.default = import ./default.nix self.overlays;
       nixosModules.hello-world = self.nixosModules.default;
     }
     // flake-utils.lib.eachDefaultSystem (
@@ -55,7 +55,6 @@
               cargoLock.lockFile = ./Cargo.lock;
             };
         packages.hello-world = self.packages.default;
-
       }
     );
 }
