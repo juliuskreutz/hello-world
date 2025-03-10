@@ -6,7 +6,7 @@
   };
 
   outputs =
-    {
+    inputs@{
       self,
       nixpkgs,
       rust-overlay,
@@ -52,7 +52,7 @@
         };
         overlays.hello-world = self.overlays.default;
 
-        nixosModules.default = import ./default.nix overlays;
+        nixosModules.default = import ./default.nix inputs;
         nixosModules.hello-world = self.nixosModules.default;
       }
     );

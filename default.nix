@@ -1,4 +1,4 @@
-overlays:
+inputs:
 {
   config,
   lib,
@@ -15,6 +15,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    nixpkgs.overlays = [ overlays.default ];
+    nixpkgs.overlays = [ inputs.self.overlays.default ];
   };
 }
