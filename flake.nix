@@ -7,6 +7,7 @@
 
   outputs =
     {
+      self,
       nixpkgs,
       rust-overlay,
       flake-utils,
@@ -31,6 +32,11 @@
             ];
           };
 
+        overlays.default = _: prev: {
+          rwm = self.packages.${prev.stdenv.hostPlatform.system}.default;
+        };
+        overlays.rwm = self.overlays.default;
+
         packages.default =
           (pkgs.makeRustPlatform {
             cargo = pkgs.rust-bin.stable.latest.default;
@@ -44,6 +50,7 @@
 
               cargoLock.lockFile = ./Cargo.lock;
             };
+        packages.hello-world = self.packages.default;
       }
     );
 }
