@@ -6,7 +6,7 @@
   };
 
   outputs =
-    inputs@{
+    {
       self,
       nixpkgs,
       rust-overlay,
@@ -15,7 +15,7 @@
     }:
     {
       overlays.default = _: prev: {
-        hello-world = self.packages.${prev.stdenv.hostPlatform.system}.default;
+        hello-world = self.packages.${prev.system}.default;
       };
       overlays.hello-world = self.overlays.default;
 
