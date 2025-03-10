@@ -14,11 +14,6 @@
       ...
     }:
     {
-      overlays.default = _: prev: {
-        hello-world = self.packages.${prev.system}.default;
-      };
-      overlays.hello-world = self.overlays.default;
-
       nixosModules.default =
         {
           config,
@@ -35,8 +30,6 @@
           };
 
           config = lib.mkIf cfg.enable {
-            # nixpkgs.overlays = [ self.overlays.default ];
-
             environment.systemPackages = [
               self.packages.${pkgs.system}.hello-world
             ];
