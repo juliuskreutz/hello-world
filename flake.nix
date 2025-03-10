@@ -19,7 +19,29 @@
       };
       overlays.hello-world = self.overlays.default;
 
-      nixosModules.default = import ./default.nix self.overlays;
+      nixosModules.default =
+        {
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
+        let
+          cfg = config.programs.hello-world;
+        in
+        {
+          options.programs.hello-world = {
+            enable = lib.mkEnableOption "hello-world";
+          };
+
+          config = lib.mkIf cfg.enable {
+            # nixpkgs.overlays = [ self.overlays.default ];
+
+            environment.systemPackages = [
+              self.packages.${pkgs.system}.hello-world
+            ];
+          };
+        };
       nixosModules.hello-world = self.nixosModules.default;
     }
     // flake-utils.lib.eachDefaultSystem (
