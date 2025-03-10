@@ -33,9 +33,9 @@
           };
 
         overlays.default = _: prev: {
-          rwm = self.packages.${prev.stdenv.hostPlatform.system}.default;
+          hello-world = self.packages.${prev.stdenv.hostPlatform.system}.default;
         };
-        overlays.rwm = self.overlays.default;
+        overlays.hello-world = self.overlays.default;
 
         packages.default =
           (pkgs.makeRustPlatform {
