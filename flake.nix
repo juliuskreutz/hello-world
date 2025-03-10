@@ -6,7 +6,7 @@
   };
 
   outputs =
-    {
+    inputs@{
       self,
       nixpkgs,
       rust-overlay,
@@ -32,11 +32,6 @@
             ];
           };
 
-        overlays.default = _: prev: {
-          hello-world = self.packages.${prev.stdenv.hostPlatform.system}.default;
-        };
-        overlays.hello-world = self.overlays.default;
-
         packages.default =
           (pkgs.makeRustPlatform {
             cargo = pkgs.rust-bin.stable.latest.default;
@@ -51,6 +46,14 @@
               cargoLock.lockFile = ./Cargo.lock;
             };
         packages.hello-world = self.packages.default;
+
+        overlays.default = _: prev: {
+          hello-world = self.packages.${prev.stdenv.hostPlatform.system}.default;
+        };
+        overlays.hello-world = self.overlays.default;
+
+        nixosModules.default = import ./default.nix overlays;
+        nixosModules.rwm = self.nixosModules.default;
       }
     );
 }
